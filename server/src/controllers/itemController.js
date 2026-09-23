@@ -31,7 +31,7 @@ export const getAllItems = async (req, res) => {
     if (status) filter.status = status;
     if (category) filter.category = category;
 
-    const items = await Item.find(filter);
+        const items = await Item.find(filter).populate('reportedBy', 'name email');
     res.status(200).json(items);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -46,7 +46,7 @@ export const getItem = async (req, res) => {
       return res.status(400).json({ message: 'Invalid item id' });
     }
 
-    const item = await Item.findById(id);
+        const item = await Item.findById(id).populate('reportedBy', 'name email');
     if (!item) {
       return res.status(404).json({ message: 'Item not found' });
     }
